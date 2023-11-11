@@ -1,6 +1,24 @@
-# Laboratory Practice - I
-For Laboratory Practice - I under SPPU Computer 2019 pattern, the 2 subjects I opted for are **Software Project Management Laboratory** & **Systems Programming & Operating Systems Laboratory**.
+# Systems Programming & Operating Systems Laboratory
+I used Java to run these SPOSL programs.
 
-For SPML, I used **GanttChart**.
+## Steps to Install Java on Ubuntu
 
-For SPOSL, I used **Java** as the programming language.
+Update your repositories using:
+
+`sudo apt-get update`
+
+To install the default version of OpenJDK for your system, run:
+
+`sudo apt install default-jdk`
+
+To install the default version of OpenJDK JRE for your system, run:
+
+`sudo apt install default-jre`
+
+To check the version of Java that you have installed, run:
+
+`java --version`
+
+To show the directory in which Java is installed, run:
+
+`echo $JAVA_HOME`
