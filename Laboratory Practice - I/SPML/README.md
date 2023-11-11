@@ -1,6 +1,29 @@
-# Laboratory Practice - I
-For Laboratory Practice - I under SPPU Computer 2019 pattern, the 2 subjects I opted for are **Software Project Management Laboratory** & **Systems Programming & Operating Systems Laboratory**.
+# Software Project Management Laboratory
+GanttProject can be downloaded from [here.](https://www.ganttproject.biz/download)
 
-For SPML, I used **GanttChart**.
+Alternatively, if you prefer not to install GanttProject, you can try [GanttProject Cloud](https://ganttproject.cloud)
 
-For SPOSL, I used **Java** as the programming language.
+## Steps to Install GanttProject on Ubuntu
+You need Java Runtime to install GanttProject.
+
+If you don't have already, install Java Runtime by running:
+
+`sudo apt install default-jdk`
+
+`sudo apt install default-jre`
+
+You can check if you have properly installed Java by running:
+
+`java --version`
+
+You should see the version of Java that you are running.
+
+Run this command in the directory in which you downloaded the .deb file:
+
+`sudo dpkg -i FILENAME.deb`
+
+Remember to replace FILENAME with the name of the .deb file you downloaded.
+
+To open GanttProject, run:
+
+`ganttproject`
