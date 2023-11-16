@@ -1,4 +1,11 @@
-# DBMS
+# Database Management Systems Laboratory
+
+This folder contains codes & outputs for all Practicals that I've performed under Database Management Systems Laboratory.
+
+I've also uploaded the respective databases that contain all the tables that I utilised.
+
+Feel free to paste these in your /var/lib/mysql folder to use them for yourself.
+
 ## Steps to Install MySQL on Ubuntu
 Update your repositories using:
 
