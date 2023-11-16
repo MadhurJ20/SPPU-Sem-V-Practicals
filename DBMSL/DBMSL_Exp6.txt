@@ -1,0 +1,128 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+Cursors: (All types: Implicit, Explicit, Cursor FOR Loop, Parameterized Cursor)
+Write a PL/SQL block of code using parameterized Cursor that will merge the data available in the newly created table N_RollCall with the data available in the table O_RollCall. If the data in the first table already exist in the second table then that data should be skipped.
+*/
+
+mysql> create database DBMSL_Exp6;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use DBMSL_Exp6;
+Database changed
+
+mysql> create table O_RollCall (RollNo int primary key, Name varchar(20), Addres
+s
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc O_RollCall;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| RollNo  | int         | NO   | PRI | NULL    |       |
+| Name    | varchar(20) | YES  |     | NULL    |       |
+| Address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table N_RollCall (RollNo int primary key, Name varchar(20), Addres
+s
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc N_RollCall;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| RollNo  | int         | NO   | PRI | NULL    |       |
+| Name    | varchar(20) | YES  |     | NULL    |       |
+| Address | varchar(30) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> delimiter #
+
+create procedure MergeCursor (in Roll_In int)
+begin
+declare exit_loop boolean;
+declare c1 cursor for select RollNo from O_RollCall where RollNo=Roll_In;
+declare continue handler for not found set exit_loop = TRUE;
+open c1;
+fetch c1 into Roll_In;
+if not exists(select * from N_RollCall where RollNo=Roll_In) then
+insert into N_RollCall select * from O_RollCall where RollNo=Roll_In;
+end if;
+close c1;
+end #
+
+mysql> delimiter ;
+
+mysql> insert into O_RollCall values (1,'Madhur','Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into O_RollCall values (2,'MJ','Mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into O_RollCall values (3,'Bharat','Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from O_RollCall;
++--------+--------+---------+
+| RollNo | Name   | Address |
++--------+--------+---------+
+|      1 | Madhur | Pune    |
+|      2 | MJ     | Mumbai  |
+|      3 | Bharat | Pune    |
++--------+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> insert into N_RollCall values (2,'MJ','Mumbai');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from N_RollCall;
++--------+------+---------+
+| RollNo | Name | Address |
++--------+------+---------+
+|      2 | MJ   | Mumbai  |
++--------+------+---------+
+1 row in set (0.00 sec)
+
+mysql> call MergeCursor(1);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from N_RollCall;
++--------+--------+---------+
+| RollNo | Name   | Address |
++--------+--------+---------+
+|      1 | Madhur | Pune    |
+|      2 | MJ     | Mumbai  |
++--------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> call MergeCursor(2);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from N_RollCall;
++--------+--------+---------+
+| RollNo | Name   | Address |
++--------+--------+---------+
+|      1 | Madhur | Pune    |
+|      2 | MJ     | Mumbai  |
++--------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> call MergeCursor(2);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from N_RollCall;
++--------+--------+---------+
+| RollNo | Name   | Address |
++--------+--------+---------+
+|      1 | Madhur | Pune    |
+|      2 | MJ     | Mumbai  |
++--------+--------+---------+
+2 rows in set (0.00 sec)

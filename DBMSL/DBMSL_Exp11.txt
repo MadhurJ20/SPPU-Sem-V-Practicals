@@ -1,0 +1,12 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+MongoDB - Map reduces operations:
+Implement Map reduces operation with suitable example using MongoDB.
+*/
+

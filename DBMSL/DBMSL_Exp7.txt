@@ -1,0 +1,156 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+Database Trigger (All Types: Row level and Statement level triggers, Before and After Triggers).
+Write a database trigger on Library table. The System should keep track of the records that are being updated or deleted. The old value of updated or deleted records should be added in Library_Audit table.
+*/
+
+mysql> create database DBMSL_Exp7;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use DBMSL_Exp7;
+Database changed
+
+mysql> create table Library (BookID int not null, BookTitle varchar(45) not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Library;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BookID         | int         | NO   | PRI | NULL    |       |
+| BookTitle      | varchar(45) | NO   |     | NULL    |       |
+| BookAuthor     | varchar(25) | NO   |     | NULL    |       |
+| BookEdition    | int         | YES  |     | NULL    |       |
+| NumberOfCopies | int         | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table Library_Audit (BookID int primary key, BookTitle varchar(45)
+ not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int, DateModified date, Operation varchar(15));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Library_Audit;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| BookID         | int         | NO   | PRI | NULL    |       |
+| BookTitle      | varchar(45) | NO   |     | NULL    |       |
+| BookAuthor     | varchar(25) | NO   |     | NULL    |       |
+| BookEdition    | int         | YES  |     | NULL    |       |
+| NumberOfCopies | int         | YES  |     | NULL    |       |
+| DateModified   | date        | YES  |     | NULL    |       |
+| Operation      | varchar(15) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> delimiter #
+
+create trigger LibraryUpdateTrigger
+before update on Library for each row
+begin
+declare Operation varchar(10);
+set Operation="Updated";
+insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
+end #
+
+create trigger LibraryDeleteTrigger
+before delete on Library for each row
+begin
+declare Operation varchar(10);
+set Operation="Deleted";
+insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
+END #
+
+mysql> delimiter ;
+
+mysql> insert into Library values (1, 'DBMS', 'Henry Korth', 1, 1000), (2, 'CNS', 'Behrouz Forouzan', 2, 500), (3, 'TOC', 'Vikas Kumar', 1, 200), (4, 'SPOS', 'A
+braham Silberschatz', 2, 300);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from Library;
++--------+-----------+----------------------+-------------+----------------+
+| BookID | BookTitle | BookAuthor           | BookEdition | NumberOfCopies |
++--------+-----------+----------------------+-------------+----------------+
+|      1 | DBMS      | Henry Korth          |           1 |           1000 |
+|      2 | CNS       | Behrouz Forouzan     |           2 |            500 |
+|      3 | TOC       | Vikas Kumar          |           1 |            200 |
+|      4 | SPOS      | Abraham Silberschatz |           2 |            300 |
++--------+-----------+----------------------+-------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> update Library set BookEdition = 6 where BookID = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Library;
++--------+-----------+----------------------+-------------+----------------+
+| BookID | BookTitle | BookAuthor           | BookEdition | NumberOfCopies |
++--------+-----------+----------------------+-------------+----------------+
+|      1 | DBMS      | Henry Korth          |           6 |           1000 |
+|      2 | CNS       | Behrouz Forouzan     |           2 |            500 |
+|      3 | TOC       | Vikas Kumar          |           1 |            200 |
+|      4 | SPOS      | Abraham Silberschatz |           2 |            300 |
++--------+-----------+----------------------+-------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Library_Audit;
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+| BookID | BookTitle | BookAuthor  | BookEdition | NumberOfCopies | DateModified | Operation |
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+|      1 | DBMS      | Henry Korth |           1 |           1000 | 2023-11-17   | Updated   |
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> update Library set BookAuthor = 'John Hopcraft' where BookTitle = 'TOC';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Library;
++--------+-----------+----------------------+-------------+----------------+
+| BookID | BookTitle | BookAuthor           | BookEdition | NumberOfCopies |
++--------+-----------+----------------------+-------------+----------------+
+|      1 | DBMS      | Henry Korth          |           6 |           1000 |
+|      2 | CNS       | Behrouz Forouzan     |           2 |            500 |
+|      3 | TOC       | John Hopcraft        |           1 |            200 |
+|      4 | SPOS      | Abraham Silberschatz |           2 |            300 |
++--------+-----------+----------------------+-------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Library_Audit;
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+| BookID | BookTitle | BookAuthor  | BookEdition | NumberOfCopies | DateModified | Operation |
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+|      1 | DBMS      | Henry Korth |           1 |           1000 | 2023-11-17   | Updated   |
+|      3 | TOC       | Vikas Kumar |           1 |            200 | 2023-11-17   | Updated   |
++--------+-----------+-------------+-------------+----------------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> delete from Library where BookTitle = 'TOC';
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from Library;
++--------+-----------+----------------------+-------------+----------------+
+| BookID | BookTitle | BookAuthor           | BookEdition | NumberOfCopies |
++--------+-----------+----------------------+-------------+----------------+
+|      1 | DBMS      | Henry Korth          |           6 |           1000 |
+|      2 | CNS       | Behrouz Forouzan     |           2 |            500 |
+|      4 | SPOS      | Abraham Silberschatz |           2 |            300 |
++--------+-----------+----------------------+-------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Library_Audit;
++--------+-----------+---------------+-------------+----------------+--------------+-----------+
+| BookID | BookTitle | BookAuthor    | BookEdition | NumberOfCopies | DateModified | Operation |
++--------+-----------+---------------+-------------+----------------+--------------+-----------+
+|      1 | DBMS      | Henry Korth   |           1 |           1000 | 2023-11-17   | Updated   |
+|      3 | TOC       | Vikas Kumar   |           1 |            200 | 2023-11-17   | Updated   |
+|      3 | TOC       | John Hopcraft |           1 |            200 | 2023-11-17   | Deleted   |
++--------+-----------+---------------+-------------+----------------+--------------+-----------+
+3 rows in set (0.00 sec)

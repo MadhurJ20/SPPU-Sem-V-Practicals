@@ -1,0 +1,360 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+SQL Queries:
+a. Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index, Sequence, Synonym, different constraints etc.
+b. Write at least 10 SQL queries on the suitable database application using SQL DML statements.
+*/
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| testDB             |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> create database DBMSL_Exp2;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use DBMSL_Exp2;
+Database changed
+
+mysql> create table StudentInformation (StuRoll int, StuName varchar(45) not null, StuStatus varchar(45), primary key(StuRoll));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| StuRoll   | int         | NO   | PRI | NULL    |       |
+| StuName   | varchar(45) | NO   |     | NULL    |       |
+| StuStatus | varchar(45) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation add column YearofBirth year;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StuRoll     | int         | NO   | PRI | NULL    |       |
+| StuName     | varchar(45) | NO   |     | NULL    |       |
+| StuStatus   | varchar(45) | YES  |     | NULL    |       |
+| YearofBirth | year        | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation modify StuStatus varchar(15) default 'Incomplete';
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-------------+-------------+------+-----+------------+-------+
+| Field       | Type        | Null | Key | Default    | Extra |
++-------------+-------------+------+-----+------------+-------+
+| StuRoll     | int         | NO   | PRI | NULL       |       |
+| StuName     | varchar(45) | NO   |     | NULL       |       |
+| StuStatus   | varchar(15) | YES  |     | Incomplete |       |
+| YearofBirth | year        | YES  |     | NULL       |       |
++-------------+-------------+------+-----+------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation rename column YearofBirth to Year;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+-------+
+| Field     | Type        | Null | Key | Default    | Extra |
++-----------+-------------+------+-----+------------+-------+
+| StuRoll   | int         | NO   | PRI | NULL       |       |
+| StuName   | varchar(45) | NO   |     | NULL       |       |
+| StuStatus | varchar(15) | YES  |     | Incomplete |       |
+| Year      | year        | YES  |     | NULL       |       |
++-----------+-------------+------+-----+------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation add check(Year between 2002 and 2005);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+-------+
+| Field     | Type        | Null | Key | Default    | Extra |
++-----------+-------------+------+-----+------------+-------+
+| StuRoll   | int         | NO   | PRI | NULL       |       |
+| StuName   | varchar(45) | NO   |     | NULL       |       |
+| StuStatus | varchar(15) | YES  |     | Incomplete |       |
+| Year      | year        | YES  |     | NULL       |       |
++-----------+-------------+------+-----+------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation modify StuRoll int auto_increment;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+----------------+
+| Field     | Type        | Null | Key | Default    | Extra          |
++-----------+-------------+------+-----+------------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL       | auto_increment |
+| StuName   | varchar(45) | NO   |     | NULL       |                |
+| StuStatus | varchar(15) | YES  |     | Incomplete |                |
+| Year      | year        | YES  |     | NULL       |                |
++-----------+-------------+------+-----+------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> create index StuIndex on StudentInformation(StuName);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table StudentInformation auto_increment = 44;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+----------------+
+| Field     | Type        | Null | Key | Default    | Extra          |
++-----------+-------------+------+-----+------------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL       | auto_increment |
+| StuName   | varchar(45) | NO   | MUL | NULL       |                |
+| StuStatus | varchar(15) | YES  |     | Incomplete |                |
+| Year      | year        | YES  |     | NULL       |                |
++-----------+-------------+------+-----+------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into StudentInformation (StuRoll, StuName, StuStatus, Year) values (55, 'Madhur Jaripatke', 'Complete','03');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+-----------+------+
+| StuRoll | StuName          | StuStatus | Year |
++---------+------------------+-----------+------+
+|      55 | Madhur Jaripatke | Complete  | 2003 |
++---------+------------------+-----------+------+
+1 row in set (0.00 sec)
+
+mysql> insert into StudentInformation (StuName, StuStatus, Year) values ('Vedant Hendre', 'Complete','03');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+-----------+------+
+| StuRoll | StuName          | StuStatus | Year |
++---------+------------------+-----------+------+
+|      55 | Madhur Jaripatke | Complete  | 2003 |
+|      56 | Vedant Hendre    | Complete  | 2003 |
++---------+------------------+-----------+------+
+2 rows in set (0.00 sec)
+
+mysql> delete from StudentInformation where StuRoll=56;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+-----------+------+
+| StuRoll | StuName          | StuStatus | Year |
++---------+------------------+-----------+------+
+|      55 | Madhur Jaripatke | Complete  | 2003 |
++---------+------------------+-----------+------+
+1 row in set (0.00 sec)
+
+mysql> alter table StudentInformation auto_increment = 44;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into StudentInformation (StuName, StuStatus, Year) values ('Vedant Hendre', 'Complete','03');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+-----------+------+
+| StuRoll | StuName          | StuStatus | Year |
++---------+------------------+-----------+------+
+|      55 | Madhur Jaripatke | Complete  | 2003 |
+|      56 | Vedant Hendre    | Complete  | 2003 |
++---------+------------------+-----------+------+
+2 rows in set (0.00 sec)
+
+mysql> update StudentInformation set StuStatus = 'Incomplete' where StuRoll = 56;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+
+| StuRoll | StuName          | StuStatus  | Year |
++---------+------------------+------------+------+
+|      55 | Madhur Jaripatke | Complete   | 2003 |
+|      56 | Vedant Hendre    | Incomplete | 2003 |
++---------+------------------+------------+------+
+2 rows in set (0.00 sec)
+
+mysql> update StudentInformation set StuRoll = 44 where StuName like 'v%';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+
+| StuRoll | StuName          | StuStatus  | Year |
++---------+------------------+------------+------+
+|      44 | Vedant Hendre    | Incomplete | 2003 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |
++---------+------------------+------------+------+
+2 rows in set (0.00 sec)
+
+mysql> insert into StudentInformation (StuName, StuStatus, Year) values ('Bharat Choudhary', 'Complete','04');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+
+| StuRoll | StuName          | StuStatus  | Year |
++---------+------------------+------------+------+
+|      44 | Vedant Hendre    | Incomplete | 2003 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |
+|      57 | Bharat Choudhary | Complete   | 2004 |
++---------+------------------+------------+------+
+3 rows in set (0.00 sec)
+
+mysql> update StudentInformation set StuRoll =23, Year ='03' where StuName like '%y';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+
+| StuRoll | StuName          | StuStatus  | Year |
++---------+------------------+------------+------+
+|      23 | Bharat Choudhary | Complete   | 2003 |
+|      44 | Vedant Hendre    | Incomplete | 2003 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |
++---------+------------------+------------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from StudentInformation where StuStatus='Incomplete';
++---------+---------------+------------+------+
+| StuRoll | StuName       | StuStatus  | Year |
++---------+---------------+------------+------+
+|      44 | Vedant Hendre | Incomplete | 2003 |
++---------+---------------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> alter table StudentInformation modify add StuMarks int not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add StuMarks int not null' at line 1
+mysql> alter table StudentInformation modify add column StuMarks int not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add column StuMarks int not null' at line 1
+mysql> alter table StudentInformation add StuMarks int not null;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+----------------+
+| Field     | Type        | Null | Key | Default    | Extra          |
++-----------+-------------+------+-----+------------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL       | auto_increment |
+| StuName   | varchar(45) | NO   | MUL | NULL       |                |
+| StuStatus | varchar(15) | YES  |     | Incomplete |                |
+| Year      | year        | YES  |     | NULL       |                |
+| StuMarks  | int         | NO   |     | NULL       |                |
++-----------+-------------+------+-----+------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from StudentInformation where StuStatus='Incomplete';
++---------+---------------+------------+------+----------+
+| StuRoll | StuName       | StuStatus  | Year | StuMarks |
++---------+---------------+------------+------+----------+
+|      44 | Vedant Hendre | Incomplete | 2003 |        0 |
++---------+---------------+------------+------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+----------+
+| StuRoll | StuName          | StuStatus  | Year | StuMarks |
++---------+------------------+------------+------+----------+
+|      23 | Bharat Choudhary | Complete   | 2003 |        0 |
+|      44 | Vedant Hendre    | Incomplete | 2003 |        0 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |        0 |
++---------+------------------+------------+------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+----------+
+| StuRoll | StuName          | StuStatus  | Year | StuMarks |
++---------+------------------+------------+------+----------+
+|      23 | Bharat Choudhary | Complete   | 2003 |        0 |
+|      44 | Vedant Hendre    | Incomplete | 2003 |        0 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |        0 |
++---------+------------------+------------+------+----------+
+3 rows in set (0.01 sec)
+
+mysql> update StudentInformation set StuMarks = 75 where StuRoll =23;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update StudentInformation set StuMarks = 60 where StuRoll = 44;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update StudentInformation set StuMarks = 69 where StuRoll = 55;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from StudentInformation;
++---------+------------------+------------+------+----------+
+| StuRoll | StuName          | StuStatus  | Year | StuMarks |
++---------+------------------+------------+------+----------+
+|      23 | Bharat Choudhary | Complete   | 2003 |       75 |
+|      44 | Vedant Hendre    | Incomplete | 2003 |       60 |
+|      55 | Madhur Jaripatke | Complete   | 2003 |       69 |
++---------+------------------+------------+------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from StudentInformation having StuStatus = 'Complete' order by StuMarks desc;
++---------+------------------+-----------+------+----------+
+| StuRoll | StuName          | StuStatus | Year | StuMarks |
++---------+------------------+-----------+------+----------+
+|      23 | Bharat Choudhary | Complete  | 2003 |       75 |
+|      55 | Madhur Jaripatke | Complete  | 2003 |       69 |
++---------+------------------+-----------+------+----------+
+2 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation add StuDoB date;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+----------------+
+| Field     | Type        | Null | Key | Default    | Extra          |
++-----------+-------------+------+-----+------------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL       | auto_increment |
+| StuName   | varchar(45) | NO   | MUL | NULL       |                |
+| StuStatus | varchar(15) | YES  |     | Incomplete |                |
+| Year      | year        | YES  |     | NULL       |                |
+| StuMarks  | int         | NO   |     | NULL       |                |
+| StuDoB    | date        | YES  |     | NULL       |                |
++-----------+-------------+------+-----+------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> alter table StudentInformation drop column StuDoB;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc StudentInformation;
++-----------+-------------+------+-----+------------+----------------+
+| Field     | Type        | Null | Key | Default    | Extra          |
++-----------+-------------+------+-----+------------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL       | auto_increment |
+| StuName   | varchar(45) | NO   | MUL | NULL       |                |
+| StuStatus | varchar(15) | YES  |     | Incomplete |                |
+| Year      | year        | YES  |     | NULL       |                |
+| StuMarks  | int         | NO   |     | NULL       |                |
++-----------+-------------+------+-----+------------+----------------+
+5 rows in set (0.00 sec)

@@ -1,0 +1,306 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+SQL Queries - all types of Join, Sub-Query and View:
+Write at least 10 SQL queries for suitable database application using SQL DML statements.
+*/
+
+mysql> create database DBMSL_Exp3;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use DBMSL_Exp3;
+Database changed
+
+mysql> create table Student (StuRoll int primary key auto_increment, StuName varchar(45) not null, StuMarks int not null, StuDeptID int not null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Student;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| StuRoll   | int         | NO   | PRI | NULL    | auto_increment |
+| StuName   | varchar(45) | NO   |     | NULL    |                |
+| StuMarks  | int         | NO   |     | NULL    |                |
+| StuDeptID | int         | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> create table Department (DeptID int primary key, DeptName varchar(20) not null);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Department;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| DeptID   | int         | NO   | PRI | NULL    |       |
+| DeptName | varchar(20) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> insert into Department values (101, 'First Year'), (401, 'Computer'), (501, 'IT'), (601, 'EnTC');
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from Department;
++--------+------------+
+| DeptID | DeptName   |
++--------+------------+
+|    101 | First Year |
+|    401 | Computer   |
+|    501 | IT         |
+|    601 | EnTC       |
++--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Student values (1, 'Madhur', 69, 401), (2, 'Bharat', 75, 101), (3, 'Shubhendu', 80, 501), (4, 'Anshuman', 90, 501), (5,'MJ', 100, 501);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from Student join Department on Student.StuDeptID=Department.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
++---------+-----------+----------+-----------+--------+------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from Student inner join Department on Student.StuDeptID=Department.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
++---------+-----------+----------+-----------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Student left join Department on Student.StuDeptID=Department.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       5 | MJ        |      100 |       420 |   NULL | NULL       |
++---------+-----------+----------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Student left outer join Department on Student.StuDeptID=Department.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       5 | MJ        |      100 |       420 |   NULL | NULL       |
++---------+-----------+----------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Student right join Department on Student.StuDeptID=Departme
+nt.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|    NULL | NULL      |     NULL |      NULL |    601 | EnTC       |
++---------+-----------+----------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Student right outer join Department on Student.StuDeptID=Department.DeptID;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|    NULL | NULL      |     NULL |      NULL |    601 | EnTC       |
++---------+-----------+----------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Student join Department;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    601 | EnTC       |
+|       1 | Madhur    |       69 |       401 |    501 | IT         |
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       1 | Madhur    |       69 |       401 |    101 | First Year |
+|       2 | Bharat    |       75 |       101 |    601 | EnTC       |
+|       2 | Bharat    |       75 |       101 |    501 | IT         |
+|       2 | Bharat    |       75 |       101 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    601 | EnTC       |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       3 | Shubhendu |       80 |       501 |    401 | Computer   |
+|       3 | Shubhendu |       80 |       501 |    101 | First Year |
+|       4 | Anshuman  |       90 |       501 |    601 | EnTC       |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    401 | Computer   |
+|       4 | Anshuman  |       90 |       501 |    101 | First Year |
+|       5 | MJ        |      100 |       420 |    601 | EnTC       |
+|       5 | MJ        |      100 |       420 |    501 | IT         |
+|       5 | MJ        |      100 |       420 |    401 | Computer   |
+|       5 | MJ        |      100 |       420 |    101 | First Year |
++---------+-----------+----------+-----------+--------+------------+
+20 rows in set (0.00 sec)
+
+mysql> select * from Student cross join Department;
++---------+-----------+----------+-----------+--------+------------+
+| StuRoll | StuName   | StuMarks | StuDeptID | DeptID | DeptName   |
++---------+-----------+----------+-----------+--------+------------+
+|       1 | Madhur    |       69 |       401 |    601 | EnTC       |
+|       1 | Madhur    |       69 |       401 |    501 | IT         |
+|       1 | Madhur    |       69 |       401 |    401 | Computer   |
+|       1 | Madhur    |       69 |       401 |    101 | First Year |
+|       2 | Bharat    |       75 |       101 |    601 | EnTC       |
+|       2 | Bharat    |       75 |       101 |    501 | IT         |
+|       2 | Bharat    |       75 |       101 |    401 | Computer   |
+|       2 | Bharat    |       75 |       101 |    101 | First Year |
+|       3 | Shubhendu |       80 |       501 |    601 | EnTC       |
+|       3 | Shubhendu |       80 |       501 |    501 | IT         |
+|       3 | Shubhendu |       80 |       501 |    401 | Computer   |
+|       3 | Shubhendu |       80 |       501 |    101 | First Year |
+|       4 | Anshuman  |       90 |       501 |    601 | EnTC       |
+|       4 | Anshuman  |       90 |       501 |    501 | IT         |
+|       4 | Anshuman  |       90 |       501 |    401 | Computer   |
+|       4 | Anshuman  |       90 |       501 |    101 | First Year |
+|       5 | MJ        |      100 |       420 |    601 | EnTC       |
+|       5 | MJ        |      100 |       420 |    501 | IT         |
+|       5 | MJ        |      100 |       420 |    401 | Computer   |
+|       5 | MJ        |      100 |       420 |    101 | First Year |
++---------+-----------+----------+-----------+--------+------------+
+20 rows in set (0.00 sec)
+
+mysql> select * from Student A, Student B where A.StuDeptID<>B.StuDeptID;
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+| StuRoll | StuName   | StuMarks | StuDeptID | StuRoll | StuName   | StuMarks | StuDeptID |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+|       5 | MJ        |      100 |       420 |       1 | Madhur    |       69 |       401 |
+|       4 | Anshuman  |       90 |       501 |       1 | Madhur    |       69 |       401 |
+|       3 | Shubhendu |       80 |       501 |       1 | Madhur    |       69 |       401 |
+|       2 | Bharat    |       75 |       101 |       1 | Madhur    |       69 |       401 |
+|       5 | MJ        |      100 |       420 |       2 | Bharat    |       75 |       101 |
+|       4 | Anshuman  |       90 |       501 |       2 | Bharat    |       75 |       101 |
+|       3 | Shubhendu |       80 |       501 |       2 | Bharat    |       75 |       101 |
+|       1 | Madhur    |       69 |       401 |       2 | Bharat    |       75 |       101 |
+|       5 | MJ        |      100 |       420 |       3 | Shubhendu |       80 |       501 |
+|       2 | Bharat    |       75 |       101 |       3 | Shubhendu |       80 |       501 |
+|       1 | Madhur    |       69 |       401 |       3 | Shubhendu |       80 |       501 |
+|       5 | MJ        |      100 |       420 |       4 | Anshuman  |       90 |       501 |
+|       2 | Bharat    |       75 |       101 |       4 | Anshuman  |       90 |       501 |
+|       1 | Madhur    |       69 |       401 |       4 | Anshuman  |       90 |       501 |
+|       4 | Anshuman  |       90 |       501 |       5 | MJ        |      100 |       420 |
+|       3 | Shubhendu |       80 |       501 |       5 | MJ        |      100 |       420 |
+|       2 | Bharat    |       75 |       101 |       5 | MJ        |      100 |       420 |
+|       1 | Madhur    |       69 |       401 |       5 | MJ        |      100 |       420 |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+18 rows in set (0.00 sec)
+
+mysql> select * from Student A, Student B where A.StuDeptID=B.StuDeptID;
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+| StuRoll | StuName   | StuMarks | StuDeptID | StuRoll | StuName   | StuMarks | StuDeptID |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+|       1 | Madhur    |       69 |       401 |       1 | Madhur    |       69 |       401 |
+|       2 | Bharat    |       75 |       101 |       2 | Bharat    |       75 |       101 |
+|       4 | Anshuman  |       90 |       501 |       3 | Shubhendu |       80 |       501 |
+|       3 | Shubhendu |       80 |       501 |       3 | Shubhendu |       80 |       501 |
+|       4 | Anshuman  |       90 |       501 |       4 | Anshuman  |       90 |       501 |
+|       3 | Shubhendu |       80 |       501 |       4 | Anshuman  |       90 |       501 |
+|       5 | MJ        |      100 |       420 |       5 | MJ        |      100 |       420 |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> select * from Student A, Student B where A.StuName<>B.StuName and A.StuDeptID=B.StuDeptID;
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+| StuRoll | StuName   | StuMarks | StuDeptID | StuRoll | StuName   | StuMarks | StuDeptID |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+|       4 | Anshuman  |       90 |       501 |       3 | Shubhendu |       80 |       501 |
+|       3 | Shubhendu |       80 |       501 |       4 | Anshuman  |       90 |       501 |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Student A, Student B where A.StuRoll<>B.StuRoll and A.StuDeptID=B.StuDeptID order by A.StuRoll;
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+| StuRoll | StuName   | StuMarks | StuDeptID | StuRoll | StuName   | StuMarks | StuDeptID |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+|       3 | Shubhendu |       80 |       501 |       4 | Anshuman  |       90 |       501 |
+|       4 | Anshuman  |       90 |       501 |       3 | Shubhendu |       80 |       501 |
++---------+-----------+----------+-----------+---------+-----------+----------+-----------+
+2 rows in set (0.01 sec)
+
+mysql> select * from Student where StuMarks in (Select StuMarks from Student where StuMarks > 80);
++---------+----------+----------+-----------+
+| StuRoll | StuName  | StuMarks | StuDeptID |
++---------+----------+----------+-----------+
+|       4 | Anshuman |       90 |       501 |
+|       5 | MJ       |      100 |       420 |
++---------+----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select StuRoll, StuName from Student where StuMarks in (Select StuMarks from Student where StuMarks > 80);
++---------+----------+
+| StuRoll | StuName  |
++---------+----------+
+|       4 | Anshuman |
+|       5 | MJ       |
++---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select StuRoll, StuName, StuDeptID from Student where StuDeptID not in (select DeptID from Department);
++---------+---------+-----------+
+| StuRoll | StuName | StuDeptID |
++---------+---------+-----------+
+|       5 | MJ      |       420 |
++---------+---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> create view DepartmentNames as select DeptName from Department;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from DepartmentNames;
++------------+
+| DeptName   |
++------------+
+| First Year |
+| Computer   |
+| IT         |
+| EnTC       |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> create or replace view StudentNames as select StuRoll, StuName from Stude
+nt;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from StudentNames;
++---------+-----------+
+| StuRoll | StuName   |
++---------+-----------+
+|       1 | Madhur    |
+|       2 | Bharat    |
+|       3 | Shubhendu |
+|       4 | Anshuman  |
+|       5 | MJ        |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> drop view DepartmentNames;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> drop view StudentNames;
+Query OK, 0 rows affected (0.02 sec)
