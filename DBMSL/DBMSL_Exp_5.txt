@@ -13,10 +13,10 @@ Write a PL/SQL block to use procedure created with above requirements:
 Stud_Marks(name, total_marks)	Result(Roll,Name, Class)
 */
 
-mysql> create database DBMSL_Exp5;
+mysql> create database DBMSL_Exp_5;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp5;
+mysql> use DBMSL_Exp_5;
 Database changed
 
 mysql> create table StudentMarks (Roll int primary key, Name varchar(30) not null, TotalMarks int not null);

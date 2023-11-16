@@ -23,10 +23,10 @@ mysql> show databases;
 +--------------------+
 5 rows in set (0.00 sec)
 
-mysql> create database DBMSL_Exp2;
+mysql> create database DBMSL_Exp_2;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp2;
+mysql> use DBMSL_Exp_2;
 Database changed
 
 mysql> create table StudentInformation (StuRoll int, StuName varchar(45) not null, StuStatus varchar(45), primary key(StuRoll));

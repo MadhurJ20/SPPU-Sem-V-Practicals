@@ -10,10 +10,10 @@ Database Trigger (All Types: Row level and Statement level triggers, Before and 
 Write a database trigger on Library table. The System should keep track of the records that are being updated or deleted. The old value of updated or deleted records should be added in Library_Audit table.
 */
 
-mysql> create database DBMSL_Exp7;
+mysql> create database DBMSL_Exp_7;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp7;
+mysql> use DBMSL_Exp_7;
 Database changed
 
 mysql> create table Library (BookID int not null, BookTitle varchar(45) not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int);

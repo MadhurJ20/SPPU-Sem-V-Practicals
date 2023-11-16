@@ -10,10 +10,10 @@ Cursors: (All types: Implicit, Explicit, Cursor FOR Loop, Parameterized Cursor)
 Write a PL/SQL block of code using parameterized Cursor that will merge the data available in the newly created table N_RollCall with the data available in the table O_RollCall. If the data in the first table already exist in the second table then that data should be skipped.
 */
 
-mysql> create database DBMSL_Exp6;
+mysql> create database DBMSL_Exp_6;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp6;
+mysql> use DBMSL_Exp_6;
 Database changed
 
 mysql> create table O_RollCall (RollNo int primary key, Name varchar(20), Addres

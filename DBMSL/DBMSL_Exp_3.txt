@@ -10,10 +10,10 @@ SQL Queries - all types of Join, Sub-Query and View:
 Write at least 10 SQL queries for suitable database application using SQL DML statements.
 */
 
-mysql> create database DBMSL_Exp3;
+mysql> create database DBMSL_Exp_3;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp3;
+mysql> use DBMSL_Exp_3;
 Database changed
 
 mysql> create table Student (StuRoll int primary key auto_increment, StuName varchar(45) not null, StuMarks int not null, StuDeptID int not null);

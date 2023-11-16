@@ -21,10 +21,10 @@ Consider Tables:
 - Also handles the exception by named exception handler or user define exception handler
 */
 
-mysql> create database DBMSL_Exp4;
+mysql> create database DBMSL_Exp_4;
 Query OK, 1 row affected (0.02 sec)
 
-mysql> use DBMSL_Exp4;
+mysql> use DBMSL_Exp_4;
 Database changed
 
 mysql> create table Borrower (RollNo int primary key, Name varchar(45) not null, DateOfIssue date, NameOfBook varchar(45), Status char);
