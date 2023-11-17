@@ -76,9 +76,7 @@ end #
 
 mysql> delimiter ;
 
-mysql> insert into Borrower values (1, 'Madhur MJ', '2023-10-31', 'Murder On The Orient Expre
-ss', 'I'), (2, 'Madhur J', '2023-11-11', 'Ikigai', 'I'), (3, 'MJ', '2023-10-08', 'Harry Potter & Th
-e Goblet Of Fire', 'I');
+mysql> insert into Borrower values (1, 'Madhur MJ', '2023-10-31', 'Murder On The Orient Express', 'I'), (2, 'Madhur J', '2023-11-11', 'Ikigai', 'I'), (3, 'MJ', '2023-10-08', 'Harry Potter & The Goblet Of Fire', 'I');
 Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
