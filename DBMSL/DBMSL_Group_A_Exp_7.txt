@@ -16,7 +16,7 @@ Query OK, 1 row affected (0.02 sec)
 mysql> use DBMSL_Exp_7;
 Database changed
 
-mysql> create table Library (BookID int not null, BookTitle varchar(45) not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int);
+mysql> create table Library (BookID int primary key, BookTitle varchar(45) not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int);
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> desc Library;
@@ -31,7 +31,7 @@ mysql> desc Library;
 +----------------+-------------+------+-----+---------+-------+
 5 rows in set (0.00 sec)
 
-mysql> create table Library_Audit (BookID int primary key, BookTitle varchar(45)
+mysql> create table Library_Audit (BookID int not null, BookTitle varchar(45)
  not null, BookAuthor varchar(25) not null, BookEdition int, NumberOfCopies int, DateModified date, Operation varchar(15));
 Query OK, 0 rows affected (0.04 sec)
 
@@ -39,7 +39,7 @@ mysql> desc Library_Audit;
 +----------------+-------------+------+-----+---------+-------+
 | Field          | Type        | Null | Key | Default | Extra |
 +----------------+-------------+------+-----+---------+-------+
-| BookID         | int         | NO   | PRI | NULL    |       |
+| BookID         | int         | NO   |     | NULL    |       |
 | BookTitle      | varchar(45) | NO   |     | NULL    |       |
 | BookAuthor     | varchar(25) | NO   |     | NULL    |       |
 | BookEdition    | int         | YES  |     | NULL    |       |
@@ -47,14 +47,14 @@ mysql> desc Library_Audit;
 | DateModified   | date        | YES  |     | NULL    |       |
 | Operation      | varchar(15) | YES  |     | NULL    |       |
 +----------------+-------------+------+-----+---------+-------+
-7 rows in set (0.00 sec)
+7 rows in set (0.01 sec)
 
 mysql> delimiter #
 
 create trigger LibraryUpdateTrigger
 before update on Library for each row
 begin
-declare Operation varchar(10);
+declare Operation varchar(15);
 set Operation="Updated";
 insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
 end #
@@ -62,10 +62,10 @@ end #
 create trigger LibraryDeleteTrigger
 before delete on Library for each row
 begin
-declare Operation varchar(10);
+declare Operation varchar(15);
 set Operation="Deleted";
 insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
-END #
+end #
 
 mysql> delimiter ;
 
