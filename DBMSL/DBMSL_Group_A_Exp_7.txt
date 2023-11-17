@@ -55,7 +55,7 @@ create trigger LibraryUpdateTrigger
 before update on Library for each row
 begin
 declare Operation varchar(15);
-set Operation="Updated";
+set Operation = "Updated";
 insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
 end #
 
@@ -63,7 +63,7 @@ create trigger LibraryDeleteTrigger
 before delete on Library for each row
 begin
 declare Operation varchar(15);
-set Operation="Deleted";
+set Operation = "Deleted";
 insert into Library_Audit values (old.BookID, old.BookTitle, old.BookAuthor, old.BookEdition, old.NumberOfCopies, curdate(), Operation);
 end #
 
