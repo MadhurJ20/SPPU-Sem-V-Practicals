@@ -10,3 +10,103 @@ MongoDB - Map reduces operations:
 Implement Map reduces operation with suitable example using MongoDB.
 */
 
+test> use DBMSL_Exp11
+switched to db DBMSL_Exp11
+
+DBMSL_Exp11> db.createCollection('Orders')
+{ ok: 1 }
+
+DBMSL_Exp11> db.Orders.insertMany([{CustomerID: 'A1', Amount: 400, Status: 'P'}, {CustomerID: 'B1', Amount: 300, Status: 'D'}, {CustomerID: 'A1', Amount: 200, Status: 'F'}, {CustomerID: 'C1', Amount: 200, Status: 'F'}, {CustomerID: 'B1', Amount: 700, Status: 'P'}, {CustomerID: 'B1', Amount: 800, Status:
+ 'P'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("655745cbd86a0d26fe81d187"),
+    '1': ObjectId("655745cbd86a0d26fe81d188"),
+    '2': ObjectId("655745cbd86a0d26fe81d189"),
+    '3': ObjectId("655745cbd86a0d26fe81d18a"),
+    '4': ObjectId("655745cbd86a0d26fe81d18b"),
+    '5': ObjectId("655745cbd86a0d26fe81d18c")
+  }
+}
+
+DBMSL_Exp11> db. Orders.find()
+[
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d187"),
+    CustomerID: 'A1',
+    Amount: 400,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d188"),
+    CustomerID: 'B1',
+    Amount: 300,
+    Status: 'D'
+  },
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d189"),
+    CustomerID: 'A1',
+    Amount: 200,
+    Status: 'F'
+  },
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d18a"),
+    CustomerID: 'C1',
+    Amount: 200,
+    Status: 'F'
+  },
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d18b"),
+    CustomerID: 'B1',
+    Amount: 700,
+    Status: 'P'
+  },
+  {
+    _id: ObjectId("655745cbd86a0d26fe81d18c"),
+    CustomerID: 'B1',
+    Amount: 800,
+    Status: 'P'
+  }
+]
+
+DBMSL_Exp11> var mapper1 = function(){emit(this.CustomerID,this.Amount)}
+
+DBMSL_Exp11> var reducer1 = function(keyCustomerID, valuesAmount) {return Array.sum(valuesAmount)}
+
+DBMSL_Exp11> db.Orders.mapReduce(mapper1, reducer1, {out: "SumOfAmounts"})
+{ result: 'Map_Reduce', ok: 1 }
+
+DBMSL_Exp11> db.SumOfAmounts.find()
+[
+  { _id: 'A1', value: 600 },
+  { _id: 'B1', value: 1800 },
+  { _id: 'C1', value: 200 }
+]
+
+DBMSL_Exp11> var mapper2 = function(){emit(this.CustomerID,this.Amount)}
+
+DBMSL_Exp11> var reducer2 = function(keyCustomerID, valuesAmount) {return Math.min.apply(Math, valuesAmount)}
+
+DBMSL_Exp11> db.Orders.mapReduce(mapper2, reducer2, {out: "MinimumOrderAmount"})
+{ result: 'MinimumOrderAmount', ok: 1 }
+
+DBMSL_Exp11> db.MinimumOrderAmount.find()
+[
+  { _id: 'B1', value: 300 },
+  { _id: 'C1', value: 200 },
+  { _id: 'A1', value: 200 }
+]
+
+DBMSL_Exp11> var mapper3 = function(){if(this.Status=='F') emit(this.CustomerID,this.Amount)}
+
+DBMSL_Exp11> var reducer3 = function (keyCustomerID, valuesAmount) {return Math.max.apply(Math, valuesAmount)}
+
+DBMSL_Exp11> db.Orders.mapReduce(mapper3, reducer3, { out: 'MaximumFailedOrderAmount' })
+{ result: 'MaximumFailedOrderAmount', ok: 1 }
+
+DBMSL_Exp11> db.MaximumFailedOrderAmount.find()
+[
+  { _id: 'C1', value: 200 },
+  { _id: 'A1', value: 200 }
+]
