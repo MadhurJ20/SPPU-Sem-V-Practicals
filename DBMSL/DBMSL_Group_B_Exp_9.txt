@@ -1,0 +1,407 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+MongoDB Queries:
+Design and Develop MongoDB Queries using CRUD operations.
+(Use CRUD operations, SAVE method, logical operators etc.)
+*/
+
+test> use DBMSL_Exp9
+switched to db DBMSL_Exp9
+
+DBMSL_Exp9> db.createCollection('Student')
+{ ok: 1 }
+
+DBMSL_Exp9> show collections
+Student
+
+DBMSL_Exp9> db.Student.insertOne({StuRoll : 55, StuName : 'Madhur', StuMarks: 69, StuBranch: 'Computer'})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6557332df39f0e2e3a50eead")
+}
+
+DBMSL_Exp9> db.Student.findOne()
+{
+  _id: ObjectId("6557332df39f0e2e3a50eead"),
+  StuRoll: 55,
+  StuName: 'Madhur',
+  StuMarks: 69,
+  StuBranch: 'Computer'
+}
+
+DBMSL_Exp9> db.Student.insertMany([{StuRoll : 23, StuName : 'Bharat', StuMarks: 75, StuBranch: 'FirstYear'}, {StuRoll: 64, StuName: 'Gaurav', StuMarks: 80, StuBranch: 'IT'}, {StuRoll: 80, StuName: 'Shubhendu', StuMarks: 70, StuBranch: 'Computer'}, {StuRoll: 69, StuName: 'MJ', StuMarks: 100, StuBranch: 'AI'}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("65573436f39f0e2e3a50eeae"),
+    '1': ObjectId("65573436f39f0e2e3a50eeaf"),
+    '2': ObjectId("65573436f39f0e2e3a50eeb0"),
+    '3': ObjectId("65573436f39f0e2e3a50eeb1")
+  }
+}
+DBMSL_Exp9> db.Student.find()
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 75,
+    StuBranch: 'FirstYear'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ',
+    StuMarks: 100,
+    StuBranch: 'AI'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({StuMarks: {$eq: 69}})
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({},{_id: 0, StuRoll: 1, StuName: 1})
+[
+  { StuRoll: 55, StuName: 'Madhur' },
+  { StuRoll: 23, StuName: 'Bharat' },
+  { StuRoll: 64, StuName: 'Gaurav' },
+  { StuRoll: 80, StuName: 'Shubhendu' },
+  { StuRoll: 69, StuName: 'MJ' }
+]
+
+DBMSL_Exp9> db.Student.find({},{StuRoll: 1, StuName: 1})
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({StuMarks: {$gte: 70}},{_id: 0, StuRoll: 1, StuName: 1})
+[
+  { StuRoll: 23, StuName: 'Bharat' },
+  { StuRoll: 64, StuName: 'Gaurav' },
+  { StuRoll: 80, StuName: 'Shubhendu' },
+  { StuRoll: 69, StuName: 'MJ' }
+]
+
+DBMSL_Exp9> db.Student.find({$and:[{StuRoll: 80},{StuBranch: 'Computer'}]})
+
+[
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({$or:[{StuBranch: 'IT'},{StuBranch: 'Computer'}]})
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({$nor:[{StuBranch: 'IT'},{StuBranch: 'Computer'}]})
+[
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 75,
+    StuBranch: 'FirstYear'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ',
+    StuMarks: 100,
+    StuBranch: 'AI'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({StuName: {$not:{$eq:'MJ'}}})
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 75,
+    StuBranch: 'FirstYear'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  }
+]
+
+DBMSL_Exp9> db.Student.find({StuBranch: {$in:['Computer', 'IT', 'AI']}})
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ',
+    StuMarks: 100,
+    StuBranch: 'AI'
+  }
+]
+
+DBMSL_Exp9> db.Student.updateOne({StuRoll: 23}, {$set: {StuMarks: 90}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+DBMSL_Exp9> db.Student.find({StuRoll: 23})
+[
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 90,
+    StuBranch: 'FirstYear'
+  }
+]
+
+DBMSL_Exp9> db.Student.updateOne({StuRoll: 59}, {$set: {StuRoll: 59, StuName: 'Anshuman', StuMarks: 80, StuBranch: 'IT'}}, {upsert:true})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65573bd0f4e062e9eeb130c2"),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+
+DBMSL_Exp9> db.Student.find({StuRoll: 59})
+[
+  {
+    _id: ObjectId("65573bd0f4e062e9eeb130c2"),
+    StuRoll: 59,
+    StuBranch: 'IT',
+    StuMarks: 80,
+    StuName: 'Anshuman'
+  }
+]
+
+DBMSL_Exp9> db.Student.renameCollection('StudentData')
+{ ok: 1 }
+
+DBMSL_Exp9> db.StudentData.find()
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 90,
+    StuBranch: 'FirstYear'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb0"),
+    StuRoll: 80,
+    StuName: 'Shubhendu',
+    StuMarks: 70,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ',
+    StuMarks: 100,
+    StuBranch: 'AI'
+  },
+  {
+    _id: ObjectId("65573bd0f4e062e9eeb130c2"),
+    StuRoll: 59,
+    StuBranch: 'IT',
+    StuMarks: 80,
+    StuName: 'Anshuman'
+  }
+]
+
+DBMSL_Exp9> db.Student.deleteOne({StuRoll: 80})
+{ acknowledged: true, deletedCount: 1 }
+DBMSL_Exp9> db.Student.find()
+[
+  {
+    _id: ObjectId("6557332df39f0e2e3a50eead"),
+    StuRoll: 55,
+    StuName: 'Madhur',
+    StuMarks: 69,
+    StuBranch: 'Computer'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeae"),
+    StuRoll: 23,
+    StuName: 'Bharat',
+    StuMarks: 90,
+    StuBranch: 'FirstYear'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeaf"),
+    StuRoll: 64,
+    StuName: 'Gaurav',
+    StuMarks: 80,
+    StuBranch: 'IT'
+  },
+  {
+    _id: ObjectId("65573436f39f0e2e3a50eeb1"),
+    StuRoll: 69,
+    StuName: 'MJ',
+    StuMarks: 100,
+    StuBranch: 'AI'
+  },
+  {
+    _id: ObjectId("65573bd0f4e062e9eeb130c2"),
+    StuRoll: 59,
+    StuBranch: 'IT',
+    StuMarks: 80,
+    StuName: 'Anshuman'
+  }
+]
+
+DBMSL_Exp9> db.Student.deleteMany({})
+{ acknowledged: true, deletedCount: 5 }
+
+DBMSL_Exp9> db.Student.find()
+
+DBMSL_Exp9> db.Student.drop()
+true
+
+DBMSL_Exp9> db.dropDatabase()
+{ ok: 1, dropped: 'DBMSL_Exp9' }
+
+DBMSL_Exp9> show databases
+admin    40.00 KiB
+config  108.00 KiB
+local    72.00 KiB
+test     72.00 KiB

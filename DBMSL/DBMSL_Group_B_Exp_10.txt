@@ -1,0 +1,204 @@
+/*
+Madhur Jaripatke
+Roll No. 55
+TE A Computer
+RMDSSOE, Warje, Pune
+*/
+
+/*
+MongoDB – Aggregation and Indexing:
+Design and Develop MongoDB Queries using aggregation and indexing with suitable example
+using MongoDB.
+*/
+
+test> use DBMSL_Exp10
+switched to db DBMSL_Exp10
+
+DBMSL_Exp10> db.createCollection('Orders')
+{ ok: 1 }
+
+DBMSL_Exp10> db.Orders.insertOne({cust_id:"A123", product:"P1", price:540, status:"A"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("65573e7af39f0e2e3a50eeb2")
+}
+
+DBMSL_Exp10> db.Orders.find()
+[
+  {
+    _id: ObjectId("65573e7af39f0e2e3a50eeb2"),
+    cust_id: 'A123',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  }
+]
+
+
+DBMSL_Exp10> db.Orders.insertMany([{cust_id:"A123", product:"P2", price:430, status:"A"}, {cust_id:"A123", product:"P3", price:400, status:"D"}, {cust_id:"B212", product:"P1", price:540, status:"A"}, {cust_id:"B212", product:"P4", price:500, status:"D"}, {cust_id:"C212", product:"P2", price:400, status:"A"}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("65573f87f39f0e2e3a50eebd"),
+    '1': ObjectId("65573f87f39f0e2e3a50eebe"),
+    '2': ObjectId("65573f87f39f0e2e3a50eebf"),
+    '3': ObjectId("65573f87f39f0e2e3a50eec0"),
+    '4': ObjectId("65573f87f39f0e2e3a50eec1")
+  }
+}
+
+DBMSL_Exp10> db.Orders.find()
+[
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebd"),
+    cust_id: 'A123',
+    product: 'P2',
+    price: 430,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebe"),
+    cust_id: 'A123',
+    product: 'P3',
+    price: 400,
+    status: 'D'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebf"),
+    cust_id: 'B212',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eec0"),
+    cust_id: 'B212',
+    product: 'P4',
+    price: 500,
+    status: 'D'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eec1"),
+    cust_id: 'C212',
+    product: 'P2',
+    price: 400,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573fe5f39f0e2e3a50eec2"),
+    cust_id: 'A123',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  }
+]
+
+DBMSL_Exp10> db.Orders.aggregate([{$count:"Total No of Documents"}])
+[ { 'Total No of Documents': 6 } ]
+
+DBMSL_Exp10> db.Orders.aggregate([{$match:{status:"A"}}])
+[
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebd"),
+    cust_id: 'A123',
+    product: 'P2',
+    price: 430,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebf"),
+    cust_id: 'B212',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eec1"),
+    cust_id: 'C212',
+    product: 'P2',
+    price: 400,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573fe5f39f0e2e3a50eec2"),
+    cust_id: 'A123',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  }
+]
+
+DBMSL_Exp10> db.Orders.aggregate([{$project:{_id:0, product:1, price:1}}])
+[
+  { product: 'P2', price: 430 },
+  { product: 'P3', price: 400 },
+  { product: 'P1', price: 540 },
+  { product: 'P4', price: 500 },
+  { product: 'P2', price: 400 },
+  { product: 'P1', price: 540 }
+]
+
+DBMSL_Exp10> db.Orders.aggregate([{$sort:{price:1}}])
+[
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebe"),
+    cust_id: 'A123',
+    product: 'P3',
+    price: 400,
+    status: 'D'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eec1"),
+    cust_id: 'C212',
+    product: 'P2',
+    price: 400,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebd"),
+    cust_id: 'A123',
+    product: 'P2',
+    price: 430,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eec0"),
+    cust_id: 'B212',
+    product: 'P4',
+    price: 500,
+    status: 'D'
+  },
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebf"),
+    cust_id: 'B212',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  },
+  {
+    _id: ObjectId("65573fe5f39f0e2e3a50eec2"),
+    cust_id: 'A123',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  }
+]
+
+DBMSL_Exp10> db.Orders.aggregate([{$match:{status:"A"}},{$project:{product:1,_id:0}}])
+[
+  { product: 'P2' },
+  { product: 'P1' },
+  { product: 'P2' },
+  { product: 'P1' }
+]
+
+DBMSL_Exp10> db.Orders.aggregate([{$sort:{price:-1}},{$limit:1}])
+[
+  {
+    _id: ObjectId("65573f87f39f0e2e3a50eebf"),
+    cust_id: 'B212',
+    product: 'P1',
+    price: 540,
+    status: 'A'
+  }
+]
