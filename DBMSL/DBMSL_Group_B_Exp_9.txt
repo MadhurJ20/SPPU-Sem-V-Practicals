@@ -45,6 +45,7 @@ DBMSL_Exp9> db.Student.insertMany([{StuRoll : 23, StuName : 'Bharat', StuMarks: 
     '3': ObjectId("65573436f39f0e2e3a50eeb1")
   }
 }
+
 DBMSL_Exp9> db.Student.find()
 [
   {
@@ -268,6 +269,7 @@ DBMSL_Exp9> db.Student.updateOne({StuRoll: 23}, {$set: {StuMarks: 90}})
   modifiedCount: 0,
   upsertedCount: 0
 }
+
 DBMSL_Exp9> db.Student.find({StuRoll: 23})
 [
   {
@@ -301,6 +303,9 @@ DBMSL_Exp9> db.Student.find({StuRoll: 59})
 
 DBMSL_Exp9> db.Student.renameCollection('StudentData')
 { ok: 1 }
+
+DBMSL_Exp9> show collections
+StudentData
 
 DBMSL_Exp9> db.StudentData.find()
 [
