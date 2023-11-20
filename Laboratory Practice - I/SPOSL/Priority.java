@@ -30,80 +30,78 @@ public class Priority
         int i;
         int k=0;
         float atat,awt;
-         p = new int[10];
-         pp = new int[10];
-         bt = new int[10];
-         w = new int[10];
-         t = new int[10];
-         a= new int[10];
-         ct=new int[10];
-         System.out.print("Enter the number of processes: ");
-         n = s.nextInt();
+        p = new int[10];
+        pp = new int[10];
+        bt = new int[10];
+        w = new int[10];
+        t = new int[10];
+        a= new int[10];
+        ct=new int[10];
+        System.out.print("Enter the number of processes: ");
+        n = s.nextInt();
+        for(i=0;i<n;i++)
+        {
+            System.out.print("\nProcess["+(i+1)+"]:");
+            bt[i] = s.nextInt();
+            pp[i] = s.nextInt();
+            a[i]=s.nextInt();
+            p[i]=i+1;
+        }
 
-         for(i=0;i<n;i++)
-         {
-             System.out.print("\nProcess["+(i+1)+"]:");
-             bt[i] = s.nextInt();
-             pp[i] = s.nextInt();
-             a[i]=s.nextInt();
-             p[i]=i+1;
-         }
         //SORT ON THE BASIS OF ARRIVAL TIME AND PRIORITY
-
         for(i=0;i<n-1;i++)
-         {
-             for(int j=i+1;j<n;j++)
-             {
-                 if(a[i]>=a[j] || pp[i]>pp[j])
-                 {
-                     x=pp[i];
-                     pp[i]=pp[j];
-                     pp[j]=x;
-                     x=bt[i];
-                     bt[i]=bt[j];
-                     bt[j]=x;
-                     x=p[i];
-                     p[i]=p[j];
-                     p[j]=x;
-                     x=a[i];
-                     a[i]=a[j];
-                     a[j]=x;
-                 }
-
-             }
-
-         }
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if(a[i]>=a[j] || pp[i]>pp[j])
+                {
+                    x=pp[i];
+                    pp[i]=pp[j];
+                    pp[j]=x;
+                    x=bt[i];
+                    bt[i]=bt[j];
+                    bt[j]=x;
+                    x=p[i];
+                    p[i]=p[j];
+                    p[j]=x;
+                    x=a[i];
+                    a[i]=a[j];
+                    a[j]=x;
+                }
+            }
+        }
         for(i=1;i<=n;i++)
-   {
-       if(i==1)
-       {
-           k=bt[0];
-           ct[0]=k;
-       }
-       else
-       {
-           k=bt[i-1]+k;
-           ct[i-1]=k;
-       }
-       for(int j=i+1;j<=n;j++)
-       {
-           if(pp[i]<pp[j] && a[j]<=k)
-           {
-               x=pp[i];
-               pp[i]=pp[j];
-               pp[j]=x;
-               x=bt[i];
-               bt[i]=bt[j];
-               bt[j]=x;
-               x=p[i];
-               p[i]=p[j];
-               p[j]=x;
-               x=a[i];
-               a[i]=a[j];
-               a[j]=x;
-           }
-       }
-   }
+        {
+            if(i==1)
+            {
+                k=bt[0];
+                ct[0]=k;
+
+            }
+            else
+            {
+                k=bt[i-1]+k;
+                ct[i-1]=k;
+            }
+            for(int j=i+1;j<=n;j++)
+            {
+                if(pp[i]<pp[j] && a[j]<=k)
+                {
+                    x=pp[i];
+                    pp[i]=pp[j];
+                    pp[j]=x;
+                    x=bt[i];
+                    bt[i]=bt[j];
+                    bt[j]=x;
+                    x=p[i];
+                    p[i]=p[j];
+                    p[j]=x;
+                    x=a[i];
+                    a[i]=a[j];
+                    a[j]=x;
+                }
+            }
+        }
         w[0]=0;
         awt=0;
         t[0]=bt[0];
@@ -115,14 +113,14 @@ public class Priority
             awt+=w[i];
             atat+=t[i];
         }
-System.out.println("\nProcess\tArrival  Burst  Wait Time Turn Around Time Priority\n");
-for(i=0;i<n;i++)
-{
-    System.out.println("\n   "+p[i]+"\t    "+a[i]+"\t    "+bt[i]+"\t   "+w[i]+"\t      "+t[i]+"\t        "+pp[i]+"\n");
-}
-awt/=n;
-atat/=n;
-System.out.println("Average Wait Time: "+ awt);
-System.out.println("Average Turnaround Time : "+ atat);
+        System.out.println("\nProcess\tArrival  Burst  Wait Time Turn Around Time Priority\n");
+        for(i=0;i<n;i++)
+        {
+            System.out.println("\n   "+p[i]+"\t    "+a[i]+"\t    "+bt[i]+"\t   "+w[i]+"\t      "+t[i]+"\t        "+pp[i]+"\n");
+        }
+        awt/=n;
+        atat/=n;
+        System.out.println("Average Wait Time: "+ awt);
+        System.out.println("Average Turnaround Time : "+ atat);
     }
 }
