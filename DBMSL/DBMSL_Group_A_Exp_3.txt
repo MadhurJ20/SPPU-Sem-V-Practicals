@@ -283,8 +283,7 @@ mysql> select * from DepartmentNames;
 +------------+
 4 rows in set (0.00 sec)
 
-mysql> create or replace view StudentNames as select StuRoll, StuName from Stude
-nt;
+mysql> create or replace view StudentNames as select StuRoll, StuName from Student;
 Query OK, 0 rows affected (0.02 sec)
 
 mysql> select * from StudentNames;

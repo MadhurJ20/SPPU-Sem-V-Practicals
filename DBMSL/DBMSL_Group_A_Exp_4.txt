@@ -57,21 +57,21 @@ mysql> desc Fine;
 
 mysql> delimiter #
 
-create procedure Calculate_Fine (in roll int, in name varchar(45)) 
-begin 
-declare d date; 
-declare difference int; 
-declare fine_amount int; 
+create procedure Calculate_Fine (in roll int, in name varchar(45))
+begin
+declare d date;
+declare difference int;
+declare fine_amount int;
 select DateOfIssue into d from Borrower where RollNo=roll and NameOfBook=name;
-select datediff (curdate(),d) into difference; 
-if (difference>15) and (difference<=30) then 
-set fine_amount= 5 * difference; 
-insert into Fine values (roll,d,fine_amount); 
-elseif (difference>30) then 
-set fine_amount= 50 * difference; 
-insert into Fine values (roll,d,fine_amount); 
-end if; 
-update Borrower set status='R' where RollNo=roll; 
+select datediff (curdate(),d) into difference;
+if (difference>15) and (difference<=30) then
+set fine_amount= 5 * difference;
+insert into Fine values (roll,d,fine_amount);
+elseif (difference>30) then
+set fine_amount= 50 * difference;
+insert into Fine values (roll,d,fine_amount);
+end if;
+update Borrower set status='R' where RollNo=roll;
 end #
 
 mysql> delimiter ;

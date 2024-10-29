@@ -247,10 +247,6 @@ mysql> select * from StudentInformation where StuStatus='Incomplete';
 +---------+---------------+------------+------+
 1 row in set (0.00 sec)
 
-mysql> alter table StudentInformation modify add StuMarks int not null;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add StuMarks int not null' at line 1
-mysql> alter table StudentInformation modify add column StuMarks int not null;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add column StuMarks int not null' at line 1
 mysql> alter table StudentInformation add StuMarks int not null;
 Query OK, 0 rows affected (0.04 sec)
 Records: 0  Duplicates: 0  Warnings: 0
@@ -274,16 +270,6 @@ mysql> select * from StudentInformation where StuStatus='Incomplete';
 |      44 | Vedant Hendre | Incomplete | 2003 |        0 |
 +---------+---------------+------------+------+----------+
 1 row in set (0.00 sec)
-
-mysql> select * from StudentInformation;
-+---------+------------------+------------+------+----------+
-| StuRoll | StuName          | StuStatus  | Year | StuMarks |
-+---------+------------------+------------+------+----------+
-|      23 | Bharat Choudhary | Complete   | 2003 |        0 |
-|      44 | Vedant Hendre    | Incomplete | 2003 |        0 |
-|      55 | Madhur Jaripatke | Complete   | 2003 |        0 |
-+---------+------------------+------------+------+----------+
-3 rows in set (0.01 sec)
 
 mysql> select * from StudentInformation;
 +---------+------------------+------------+------+----------+

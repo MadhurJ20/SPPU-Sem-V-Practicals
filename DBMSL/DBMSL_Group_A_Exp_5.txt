@@ -7,7 +7,10 @@ RMDSSOE, Warje, Pune
 
 /*
 Named PL/SQL Block: PL/SQL Stored Procedure and Stored Function.
-Write a Stored Procedure namely proc_Grade for the categorization of student. If marks scored by students in examination is <=1500 and marks>=990 then student will be placed in distinction category if marks scored are between 989 and 900 category is first class, if marks 899 and 825 category is Higher Second Class.
+Write a Stored Procedure namely proc_Grade for the categorization of student.
+If marks scored by students in examination is <=1500 and marks>=990 then student will
+be placed in distinction category if marks scored are between 989 and 900 category is
+first class, if marks 899 and 825 category is Higher Second Class.
 
 Write a PL/SQL block to use procedure created with above requirements:
 Stud_Marks(name, total_marks)	Result(Roll,Name, Class)
@@ -45,7 +48,7 @@ mysql> desc Result;
 +-------+-------------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
 
-delimiter #
+mysql> delimiter #
 
 create procedure proc_Grade(in marks int, out class varchar(10))
 begin
@@ -58,24 +61,27 @@ end if;
 if marks<=824 and marks>=750 then set class='SC';
 end if;
 if marks<=749 and marks>=650 then set class='PC';
-end if; 
+end if;
 if marks < 650 then set class='FAIL';
 end if;
 end #
 
-create function Find_Result(Roll_In int) returns int deterministic
+create function Find_Result(Roll_In int) returns varchar(20) deterministic
 begin
 declare marks int;
 declare Grade varchar(5);
 declare StuName varchar(30);
-select StudentMarks.TotalMarks,StudentMarks.Name into marks,
-StuName from StudentMarks where StudentMarks.StuRoll = Roll_In;
+select StudentMarks.TotalMarks,StudentMarks.Name into marks, StuName from StudentMarks where StudentMarks.Roll = Roll_In;
 call proc_Grade(marks, @Grade);
 insert into Result values (Roll_In, StuName, @Grade);
-return Roll_In;
+return @Grade;
 end #
 
-delimiter ;
+mysql> delimiter ;
+
+mysql> insert into StudentMarks(Roll,Name,TotalMarks) values (23,'Bharat',788),(55,'Madhur',1400),(64,'Gaurav',989),(69,'MJ',600);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
 
 mysql> select * from StudentMarks;
 +------+--------+------------+
