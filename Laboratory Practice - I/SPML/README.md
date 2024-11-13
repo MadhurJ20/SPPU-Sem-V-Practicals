@@ -1,8 +1,6 @@
 # Software Project Management Laboratory
 GanttProject can be downloaded from [here.](https://www.ganttproject.biz/download)
 
-Alternatively, if you prefer not to install GanttProject, you can try [GanttProject Cloud](https://ganttproject.cloud)
-
 ## Steps to Install GanttProject on Ubuntu
 You need Java Runtime to install GanttProject.
 
